@@ -4,31 +4,43 @@ var socketio = io();
 const messages = document.getElementById('messages');
 */
 
-
-const createJoinMessage = (name, msg) => {
+const createJoinMessage = (name, msg, color='white') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name'>${name} </strong>${msg}
+            <strong id='msg-name' style='color:${color}'>${name} </strong>${msg}
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
     `;
+    
+    /*
+    const msg = content.getElementById('msg-name');
+    msg.style.color = 'blue';
+    */
+
     messages.innerHTML += content;
 };
 
 
-const createMessage = (name, msg) => {
+const createMessage = (name, msg, color='red') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name'>${name}: </strong>${msg}
+            <strong id='msg-name' style='color:${color}'>${name}: </strong>${msg}
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
     `;
+
+    /*
+    const msg = content.getElementById('msg-name');
+    msg.style.color = 'red'
+    */
+
     messages.innerHTML += content;
 };
+
 
 
 socketio.on('message', (data) => {
@@ -58,4 +70,10 @@ msgForm.addEventListener('keydown', (event) => {
 const sendButton = document.getElementById('send-btn');
 sendButton.addEventListener('click', () => {
     sendMessage();
+    /*
+    const nameColor = document.getElementById('msg-name');
+    nameColor.style.color = "red";
+    */
 })
+
+
