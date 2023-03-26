@@ -42,7 +42,7 @@ def home():
             room = generate_code(4)
             rooms[room] = {'members': 0, 'messages': []}
             print(rooms)
-        elif room not in rooms:
+        elif code not in rooms:
             return render_template('home.html', error='Specified room does not exist', code=code, name=name)
 
         session['room'] = room
@@ -50,7 +50,7 @@ def home():
         
         return redirect(url_for('room'))
     
-
+    # render html block for home page, passing no variables
     return render_template("home.html")
 
 @app.route("/room")
@@ -61,7 +61,22 @@ def room():
     if room is None or session.get('name') is None or room not in rooms:
         return redirect(url_for('home'))
 
-    return render_template('room.html')
+    # render html block for lobby page, passing code variable to display
+    return render_template('room.html', code=room)
+
+@socketio.on('message')
+def message(data):
+    room = session.get("room")
+    if room not in rooms:
+        return
+    
+    content = {
+        "name": session.get("name"),
+        "message": data["data"]
+    }
+    send(content, to=room)
+    rooms[room]["messages"].append(content)
+    print(f" {session.get('name')} said: {data['data']}")
 
 # Socket connection (e.g. connecting players to certain lobbies or sending messages to several clients)
 @socketio.on('connect')
