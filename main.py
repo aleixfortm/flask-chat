@@ -9,7 +9,6 @@ socketio = SocketIO(app)
 
 rooms = {}
 
-
 def generate_code(length):
     while True:
         code = ''
