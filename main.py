@@ -7,9 +7,11 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = 'secret2'
 socketio = SocketIO(app)
 
+
 rooms = {}
 
 def generate_code(length):
+    #Generates random non-existent 4-digit code
     while True:
         code = ''
         for _ in range(length):
@@ -17,7 +19,21 @@ def generate_code(length):
 
         if code not in rooms:
             return code
-    
+
+def generate_color():
+    # Generates random RGB values
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    colors = [r, g, b]
+
+    # Makes one of the colors imperatively bright
+    n = random.randint(0, 2)
+    colors[n] = random.randint(170, 255)
+    colors = tuple(colors)
+
+    return colors
+
 
 @app.route("/", methods=["POST", "GET"])
 def home():

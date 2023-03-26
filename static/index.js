@@ -1,13 +1,15 @@
 var socketio = io();
 
+/*
 const messages = document.getElementById('messages');
+*/
 
-const createMessage = (name, msg) => {
+
+const createJoinMessage = (name, msg) => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name'>${name}</strong>
-            <br>${msg}
+            <strong id='msg-name'>${name} </strong>${msg}
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
@@ -15,14 +17,45 @@ const createMessage = (name, msg) => {
     messages.innerHTML += content;
 };
 
+
+const createMessage = (name, msg) => {
+    const content =  `
+    <div class='text'>
+        <span class='msg-full'>
+            <strong id='msg-name'>${name}: </strong>${msg}
+        </span>
+        <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
+    </div>
+    `;
+    messages.innerHTML += content;
+};
+
+
 socketio.on('message', (data) => {
-    createMessage(data.name, data.message);
-  
+    if (data.message === 'has joined the lobby') {
+        createJoinMessage(data.name, data.message);
+    }else{
+        createMessage(data.name, data.message);
+    }
 })
 
+// Fetches data from message input box and emits it to socketio
 const sendMessage = () => {
     const message = document.getElementById('message');
     if (message.value == "") return;
     socketio.emit('message', {data: message.value});
     message.value = '';
 }
+
+// Sends message upon hitting Enter
+const msgForm = document.getElementById('content');
+msgForm.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter'){
+        sendMessage();
+    }
+})
+// Sends message upon clicking 'send' button
+const sendButton = document.getElementById('send-btn');
+sendButton.addEventListener('click', () => {
+    sendMessage();
+})
