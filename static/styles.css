@@ -52,12 +52,15 @@
     display: flex;
 }
 
-.message-title{
+.lobby-code{
     text-align: center;
+    font-size: 2000;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .msg-full{
-    font-family: 'Source Sans Pro', sans-serif;;
+    font-family: 'Source Sans Pro', sans-serif;
+
 }
 
 #message {
@@ -65,5 +68,6 @@
 }
 
 #msg-name{
-    color: red;
+    color: rgb(7, 28, 218);
+    font-weight: 1200;
 }
