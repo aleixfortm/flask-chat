@@ -26,14 +26,14 @@ def generate_color():
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     colors = [r, g, b]
-
     # Makes one of the colors imperatively bright
+    """
     n = random.randint(0, 2)
     colors[n] = random.randint(170, 255)
     colors = tuple(colors)
-
+    """
     return colors
-
+   
 
 @app.route("/", methods=["POST", "GET"])
 def home():
@@ -55,7 +55,7 @@ def home():
         room = code
         if create != False:
             room = generate_code(4)
-            rooms[room] = {'members': 0, 'messages': []}
+            rooms[room] = {'n_users': 0, 'users': []}
             print(rooms)
         elif code not in rooms:
             return render_template('home.html', error='Specified room does not exist', code=code, name=name)
@@ -86,14 +86,35 @@ def message(data):
     if room not in rooms:
         return
     
-    content = {
-        "name": session.get("name"),
-        "message": data["data"],
-    }
+    # Check if user already in dict so no need to generate color again
+    # Maybe check if possible to pass it to session and retrieve it from there (?)
     
+    user_name = session.get("name")
+    existent_user = False
+    color = generate_color()
+
+    for i, user in enumerate(rooms[room]['users']):
+        if user['name'] == user_name:
+            existent_user = True
+            pos = i
+            color = user['color']
+            break 
+
+    content = {
+            "name": user_name,
+            "color": color,
+            "message": data["data"],
+            }
+
+
+    if existent_user:
+        rooms[room]["users"][pos] = content
+    else:
+        rooms[room]["users"].append(content)
+
     send(content, to=room)
     
-    rooms[room]["messages"].append(content)
+    print(rooms)
     print(f" {session.get('name')} said: {data['data']}")
 
 # Socket connection (e.g. connecting players to certain lobbies or sending messages to several clients)
@@ -111,7 +132,7 @@ def connect(auth):
     join_room(room)
     send({"name": name, "message": "has joined the lobby"}, to=room)
     
-    rooms[room]["members"] += 1 
+    rooms[room]["n_users"] += 1 
     print(f'{name} joined room {room}')
 
 @socketio.on('disconnect')
@@ -122,8 +143,8 @@ def disconnect():
     leave_room(room)
     
     if room in rooms:
-        rooms[room]['members'] -= 1
-        if rooms[room]['members'] <= 0:
+        rooms[room]['n_users'] -= 1
+        if rooms[room]['n_users'] <= 0:
             del rooms[room]
         
     send({"name": name, "message": "has left the lobby"}, to=room)

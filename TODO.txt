@@ -1,6 +1,7 @@
 1. Set different name color for each member
-    - Send color variable to html/css each time user joins lobby
+    - Send color variable to html/css each time user joins lobby -- DONE
     - Save color value for that specific user
-    
-2. Own messages display on the left, others' messages display on the right
-3. Display amount of online members
+
+2. Send messages with enter key -- DONE
+3. Own messages display on the left, others' messages display on the right
+4. Display amount of online members
