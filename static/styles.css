@@ -56,6 +56,14 @@
     text-align: center;
 }
 
+.msg-full{
+    font-family: 'Source Sans Pro', sans-serif;;
+}
+
 #message {
     flex: 1;
+}
+
+#msg-name{
+    color: red;
 }

@@ -5,8 +5,9 @@ const messages = document.getElementById('messages');
 const createMessage = (name, msg) => {
     const content =  `
     <div class='text'>
-        <span>
-            <strong>${name}</strong>: ${msg}
+        <span class='msg-full'>
+            <strong id='msg-name'>${name}</strong>
+            <br>${msg}
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
