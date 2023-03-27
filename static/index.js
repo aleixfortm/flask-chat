@@ -4,11 +4,11 @@ var socketio = io();
 const messages = document.getElementById('messages');
 */
 
-const createJoinMessage = (name, msg, color='white') => {
+const createJoinMessage = (name, msg, color='black') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name' style='color: ${color}'>${name} </strong>${msg}
+            <strong id='msg-name' style='color:${color}'>${name} </strong> <a style='font-style: italic'>${msg}</a>
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
@@ -22,7 +22,20 @@ const createMessage = (name, msg, color='red') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name' style='color: rgb(${color})'>${name}: </strong>${msg}
+            <strong id='msg-name' style='color: ${color}'>${name}: </strong>${msg}
+        </span>
+        <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
+    </div>
+    `;
+    
+    messages.innerHTML += content;
+};
+
+const createLeaveMessage = (name, msg, color='black') => {
+    const content =  `
+    <div class='text'>
+        <span class='msg-full'>
+            <strong id='msg-name' style='color: ${color}'>${name}: </strong>${msg}
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
@@ -34,9 +47,17 @@ const createMessage = (name, msg, color='red') => {
 
 socketio.on('message', (data) => {
     if (data.message === 'has joined the lobby') {
+
         createJoinMessage(data.name, data.message, data.color);
+
+    }else if (data.message === 'has left the lobby') {
+
+        createLeaveMessage(data.name, data.message, data.color)   
+
     }else{
+
         createMessage(data.name, data.message, data.color);
+
     }
 })
 

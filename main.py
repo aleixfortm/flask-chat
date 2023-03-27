@@ -9,6 +9,8 @@ socketio = SocketIO(app)
 
 
 rooms = {}
+used_colors = ['pollancre']
+not_visible_colors = ['lime']
 
 def generate_code(length):
     #Generates random non-existent 4-digit code
@@ -21,18 +23,23 @@ def generate_code(length):
             return code
 
 def generate_color():
+    global used_colors
+    """
     # Generates random RGB values
     r = random.randint(0, 255)
     g = random.randint(0, 255)
     b = random.randint(0, 255)
-    colors = [r, g, b]
+    print(used_colors)
+    """
     # Makes one of the colors imperatively bright
-    """
-    n = random.randint(0, 2)
-    colors[n] = random.randint(170, 255)
-    colors = tuple(colors)
-    """
-    return colors
+    colors = ['red', 'dodgerblue', 'midnightblue', 'darkorange', 'fuchsia', 'green', 'purple', 'maroon', 'indigo', 'tomato']
+    while True:
+        x = random.randint(0, len(colors) - 1)
+        if colors[x] not in used_colors:
+            used_colors.append(colors[x])
+            break
+
+    return colors[x]
    
 
 @app.route("/", methods=["POST", "GET"])
@@ -153,4 +160,4 @@ def disconnect():
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, port=8080, host='0.0.0.0')
