@@ -98,7 +98,6 @@ def message(data):
     
     user_name = session.get("name")
     existent_user = False
-    color = generate_color()
 
     for i, user in enumerate(rooms[room]['users']):
         if user['name'] == user_name:
@@ -106,7 +105,10 @@ def message(data):
             pos = i
             color = user['color']
             break 
-
+    
+    if not existent_user:
+        color = generate_color()
+    
     content = {
             "name": user_name,
             "color": color,
