@@ -1,9 +1,5 @@
 var socketio = io();
 
-/*
-const messages = document.getElementById('messages');
-*/
-
 const createJoinMessage = (name, msg, color='black') => {
     const content =  `
     <div class='text'>
