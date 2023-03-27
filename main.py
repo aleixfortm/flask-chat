@@ -9,8 +9,8 @@ socketio = SocketIO(app)
 
 
 rooms = {}
-used_colors = ['pollancre']
-not_visible_colors = ['lime']
+user_names = []
+used_colors = []
 
 def generate_code(length):
     #Generates random non-existent 4-digit code
@@ -32,7 +32,7 @@ def generate_color():
     print(used_colors)
     """
     # Makes one of the colors imperatively bright
-    colors = ['red', 'dodgerblue', 'midnightblue', 'darkorange', 'fuchsia', 'green', 'purple', 'maroon', 'indigo', 'tomato']
+    colors = ['red', 'dodgerblue', 'midnightblue', 'darkorange', 'fuchsia', 'green', 'purple', 'salmon', 'indigo', 'tomato']
     while True:
         x = random.randint(0, len(colors) - 1)
         if colors[x] not in used_colors:
@@ -77,12 +77,21 @@ def home():
 
 @app.route("/room")
 def room():
-    
-    # Avoid joining room directly from navbar
+    # Redirect to home page if requirements not met (e.g. trying to access lobby without specifying name or lobby code)
     room = session.get('room')
-    if room is None or session.get('name') is None or room not in rooms:
-        return redirect(url_for('home'))
+    name = session.get('name')
 
+    existent_user = False
+    existent_lobby = False
+    if name != None and room in rooms:
+        existent_lobby = True
+        for user in rooms[room]['users']:
+            if user['name'] == name:
+                existent_user = True
+
+    if room is None or name is None or room not in rooms or existent_user or not existent_lobby:
+        return redirect(url_for('home'))
+    
     # render html block for lobby page, passing code variable to display
     return render_template('room.html', code=room)
 
@@ -98,7 +107,6 @@ def message(data):
     
     user_name = session.get("name")
     existent_user = False
-    color = generate_color()
 
     for i, user in enumerate(rooms[room]['users']):
         if user['name'] == user_name:
@@ -106,13 +114,15 @@ def message(data):
             pos = i
             color = user['color']
             break 
-
+    
+    if not existent_user:
+        color = generate_color()
+    
     content = {
             "name": user_name,
             "color": color,
             "message": data["data"],
             }
-
 
     if existent_user:
         rooms[room]["users"][pos] = content
@@ -160,4 +170,8 @@ def disconnect():
 
 
 if __name__ == '__main__':
-    socketio.run(app, port=8080, host='0.0.0.0')
+    # LOCAL ACCESS
+    socketio.run(app, debug=True)
+
+    # PUBLIC ACCESS
+    # socketio.run(app, port=8080, host='0.0.0.0')

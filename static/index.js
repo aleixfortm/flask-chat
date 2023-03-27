@@ -1,14 +1,10 @@
 var socketio = io();
 
-/*
-const messages = document.getElementById('messages');
-*/
-
 const createJoinMessage = (name, msg, color='black') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name' style='color:${color}'>${name} </strong> <a style='font-style: italic'>${msg}</a>
+            <strong id='msg-name' style='color:${color}'>${name} </strong> <a style='color: darkgreen'>${msg}</a>
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
@@ -35,7 +31,7 @@ const createLeaveMessage = (name, msg, color='black') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name' style='color: ${color}'>${name}: </strong>${msg}
+            <strong id='msg-name' style='color: ${color}'>${name} </strong><a style='color: firebrick'>${msg}</a>
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>

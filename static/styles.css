@@ -1,3 +1,6 @@
+body {
+    background-color: #181a1b
+}
 .content{
     display: flex;
     align-items: center;
@@ -27,15 +30,12 @@
 }
 
 .message-box {
-    border-color: rgb(13, 221, 48);
-    border-width: 2px;
-    border-style: solid;
     border-radius: 5px;
-    background-color: rgb(219, 219, 219);
+    background-color: rgb(212, 212, 212);
     height: 80vh;
     display: flex;
     flex-direction: column;
-    width: 80vw;    
+    width: 500px;    
     align-items: stretch;
 }
 
@@ -47,7 +47,6 @@
 }
 
 .inputs {
-    padding: 10px;
     display: flex;
 }
 
@@ -63,8 +62,21 @@
 
 #message {
     flex: 1;
+    height: 50px;
+    width: 100%;
+    border: blue;
+    font-family: 'Source Sans Pro', sans-serif;
+    overflow-y: auto;
+    font: inherit;
+    padding: 0.5em;
 }
+
+
 
 #msg-name {
     font-weight: 1200;
+}
+
+input[type=text]:focus{
+    border: none;
 }
