@@ -9,7 +9,6 @@ socketio = SocketIO(app)
 
 
 rooms = {}
-user_names = []
 used_colors = []
 
 def generate_code(length):
@@ -24,12 +23,15 @@ def generate_code(length):
 
 def generate_color():
     global used_colors
-    """
+
     # Generates random RGB values
-    r = random.randint(0, 255)
+    r = 255
     g = random.randint(0, 255)
     b = random.randint(0, 255)
-    print(used_colors)
+
+    colors = [r, g, b]
+    random.shuffle(colors)
+
     """
     # Makes one of the colors imperatively bright
     colors = ['red', 'dodgerblue', 'midnightblue', 'darkorange', 'fuchsia', 'green', 'purple', 'salmon', 'indigo', 'tomato']
@@ -38,8 +40,9 @@ def generate_color():
         if colors[x] not in used_colors:
             used_colors.append(colors[x])
             break
+    """
 
-    return colors[x]
+    return tuple(colors)
    
 
 @app.route("/", methods=["POST", "GET"])
@@ -101,10 +104,7 @@ def message(data):
     room = session.get("room")
     if room not in rooms:
         return
-    
-    # Check if user already in dict so no need to generate color again
-    # Maybe check if possible to pass it to session and retrieve it from there (?)
-    
+
     user_name = session.get("name")
     existent_user = False
 
@@ -132,41 +132,76 @@ def message(data):
     send(content, to=room)
     
     print(rooms)
-    print(f" {session.get('name')} said: {data['data']}")
+    print(f"{session.get('name')} said: {data['data']}")
+
 
 # Socket connection (e.g. connecting players to certain lobbies or sending messages to several clients)
 @socketio.on('connect')
 def connect(auth):
     room = session.get('room')
     name = session.get('name')
-    # Make sure they have provided room and name
+    
+    existent_user = False
+    if room in rooms:
+        for user in rooms[room]['users']:
+            if user['name'] == name:
+                existent_user = True
+                break 
+
     if not room or not name:
         return
     if room not in rooms:
         leave_room(room)
         return
-    
+
     join_room(room)
-    send({"name": name, "message": "has joined the lobby"}, to=room)
+
+    color = generate_color()
+    message = "has joined the lobby"
+    content = {
+            "name": name,
+            "color": color,
+            "message": message,
+            }
+
+    send(content, to=room)
     
-    rooms[room]["n_users"] += 1 
+    rooms[room]['users'].append(content)
+    rooms[room]["n_users"] += 1
     print(f'{name} joined room {room}')
+
 
 @socketio.on('disconnect')
 def disconnect():
     room = session.get('room')
     name = session.get('name')
-    
+
     leave_room(room)
     
+    user_list = rooms[room]['users']
+    for user in user_list:
+        if user['name'] == name:
+            color = user['color']
+            # The next line of code deletes the user from the lobby. It is good practice so that we use as 
+            # little memory as possible. However, the color from this user is lost, and if it joins 
+            # the chat again, the color will change. By commenting it we avoid color change when joining with the same color.
+            user_list.remove(user)
+            break 
+
     if room in rooms:
         rooms[room]['n_users'] -= 1
         if rooms[room]['n_users'] <= 0:
             del rooms[room]
-        
-    send({"name": name, "message": "has left the lobby"}, to=room)
     
-    print(f"{name} has left the room {room}")
+    message = 'has left the lobby'
+    content = {
+            "name": name,
+            "color": color,
+            "message": message,
+            }
+
+    send(content, to=room)
+    print(f"{name} has left room {room}")
 
 
 if __name__ == '__main__':
@@ -174,4 +209,4 @@ if __name__ == '__main__':
     socketio.run(app, debug=True)
 
     # PUBLIC ACCESS
-    # socketio.run(app, port=8080, host='0.0.0.0')
+    #socketio.run(app, port=8080, host='0.0.0.0')

@@ -1,6 +1,63 @@
-body {
-    background-color: #181a1b
+html {
+    color-scheme: dark !important;
 }
+body {
+    background-color: #181a1b;
+    font-family: 'Source Sans Pro', sans-serif;   
+}
+
+.top {
+    display: flex;
+    align-items: stretch;
+    background: chocolate;
+    color: #eee;
+    padding: 10px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.info {
+    display: flex;
+    text-align: center;
+    align-items: stretch;
+    font-family: inherit;
+    padding: 5px;
+}
+.logo{
+    font-family: inherit;
+    font-weight: bolder;
+}
+
+.spacer {
+    width: 0.5%;
+}
+
+.spacer-2{
+    width: 65%;
+}
+
+.lobby-members{
+    padding: 5px;
+    background-color: rgb(87, 87, 87);
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: bolder;
+}
+
+
+
+.lobby-code{
+    text-align: center;
+    position: relative;
+    font-size: 2000;
+    font-family: inherit;
+    background-color: rgb(34, 89, 161);
+    border-radius: 10px;
+    padding: 5px;
+    cursor: copy;
+    font-weight: bolder;
+}
+
 .content{
     display: flex;
     align-items: center;
@@ -30,8 +87,7 @@ body {
 }
 
 .message-box {
-    border-radius: 5px;
-    background-color: rgb(212, 212, 212);
+    background-color: rgb(56, 55, 55);
     height: 80vh;
     display: flex;
     flex-direction: column;
@@ -50,12 +106,6 @@ body {
     display: flex;
 }
 
-.lobby-code{
-    text-align: center;
-    font-size: 2000;
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
 .msg-full{
     font-family: 'Source Sans Pro', sans-serif;
 }
@@ -71,6 +121,9 @@ body {
     padding: 0.5em;
 }
 
+.test{
+    color: rgb(255, 0, 0);
+}
 
 
 #msg-name {

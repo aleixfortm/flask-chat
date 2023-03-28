@@ -1,10 +1,10 @@
 var socketio = io();
 
-const createJoinMessage = (name, msg, color='black') => {
+const createJoinMessage = (name, msg, color='white') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name' style='color:${color}'>${name} </strong> <a style='color: darkgreen'>${msg}</a>
+            <strong id='msg-name' style='color: rgb(${color})'>${name} </strong> <strong style='color: #b7ffb0'>${msg}</strong>
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
@@ -18,7 +18,7 @@ const createMessage = (name, msg, color='red') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name' style='color: ${color}'>${name}: </strong>${msg}
+            <strong id='msg-name' style='color: rgb(${color})'>${name} </strong>${msg}
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
@@ -27,11 +27,11 @@ const createMessage = (name, msg, color='red') => {
     messages.innerHTML += content;
 };
 
-const createLeaveMessage = (name, msg, color='black') => {
+const createLeaveMessage = (name, msg, color='white') => {
     const content =  `
     <div class='text'>
         <span class='msg-full'>
-            <strong id='msg-name' style='color: ${color}'>${name} </strong><a style='color: firebrick'>${msg}</a>
+            <strong id='msg-name' style='color: rgb(${color})'>${name} </strong><strong style='color: #ff7676'>${msg}</strong>
         </span>
         <!-- <span class='muted'>${new Date().toLocaleString()}</span> (add date to message)-->
     </div>
@@ -48,7 +48,7 @@ socketio.on('message', (data) => {
 
     }else if (data.message === 'has left the lobby') {
 
-        createLeaveMessage(data.name, data.message, data.color)   
+        createLeaveMessage(data.name, data.message, data.color, data.color)   
 
     }else{
 
