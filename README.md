@@ -2,7 +2,7 @@
 
 Chat rooms project created with flask and flask_socketIO.
 
-
+![Screenshot from 2023-03-28 22-45-37](https://user-images.githubusercontent.com/95043218/228362698-ccfdc715-0ffe-4b91-b0b7-a0ded815821a.png)
 
 # Dependencies
 
