@@ -45,6 +45,7 @@ body {
     font-family: inherit;
     font-weight: bolder;
     align-items: center;
+    padding: 5px;
 }
 
 .icon {
