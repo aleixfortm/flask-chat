@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Chat app</title>
+    <link
+        rel="stylesheet"
+        href="teststyles.css"
+        />
+    <script 
+        src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" 
+        integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" 
+        crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <div class="content" id="content">
+        <div class="page">
+            <div class="top">
+                <div class="info">CHAT ROOM</div>
+                <div class="spacer"></div>
+                <div class="lobby-code">ABCD</div>
+                <div class="spacer-2"></div>
+                <!-- CODE TO CHANGE -->
+                <div class="lobby-members">1</div>
+                <!-- END OF CODE TO CHANGE -->
+            </div>
+            <div class="chat">
+                <div class="message-box">
+                    <div class="messages" id="messages">
+                        <!-- Example message -->
+                        <div class='text'>
+                            <span class='msg-full'>
+                                <strong id='msg-name' style='color: red'>Pollancre</strong> yo what is up my dudes
+                            </span>
+                        </div>
+                        <!-- End of example message -->
+                    </div>
+                    <div class="inputs">
+                        <input type='text' name='message' id='message' placeholder="Type here to chat" maxlength="300"></input>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</body>
+</html>

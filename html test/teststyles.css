@@ -6,6 +6,7 @@ body {
     font-family: 'Source Sans Pro', sans-serif;   
 }
 
+
 .top {
     display: flex;
     align-items: stretch;
@@ -45,6 +46,7 @@ body {
     font-family: inherit;
     font-weight: bolder;
     align-items: center;
+    padding: 5px;
 }
 
 .icon {
@@ -73,8 +75,6 @@ body {
 .members-number {
     display: flex;
 }
-
-
 
 
 .content{
@@ -140,15 +140,3 @@ body {
     padding: 0.5em;
 }
 
-.test{
-    color: rgb(255, 0, 0);
-}
-
-
-#msg-name {
-    font-weight: 1200;
-}
-
-input[type=text]:focus{
-    border: none;
-}
