@@ -1,6 +1,8 @@
 var socketio = io();
 
-const createJoinMessage = (name, msg, color='white') => {
+const createJoinMessage = (name, msg, color='white', n_users=1) => {
+    lobby_members.innerHTML = n_users;
+
     const content =  `
     <div class='text'>
         <span class='msg-full'>
@@ -27,7 +29,9 @@ const createMessage = (name, msg, color='red') => {
     messages.innerHTML += content;
 };
 
-const createLeaveMessage = (name, msg, color='white') => {
+const createLeaveMessage = (name, msg, color='white', n_users=1) => {
+    lobby_members.innerHTML = n_users;
+
     const content =  `
     <div class='text'>
         <span class='msg-full'>
@@ -43,16 +47,16 @@ const createLeaveMessage = (name, msg, color='white') => {
 
 socketio.on('message', (data) => {
     if (data.message === 'has joined the lobby') {
-
         createJoinMessage(data.name, data.message, data.color);
+
 
     }else if (data.message === 'has left the lobby') {
 
-        createLeaveMessage(data.name, data.message, data.color, data.color)   
+        createLeaveMessage(data.name, data.message, data.color);
 
     }else{
 
-        createMessage(data.name, data.message, data.color);
+        createMessage(data.name, data.message, data.color, data.n_users);
 
     }
 })
@@ -72,14 +76,3 @@ msgForm.addEventListener('keydown', (event) => {
         sendMessage();
     }
 })
-// Sends message upon clicking 'send' button
-const sendButton = document.getElementById('send-btn');
-sendButton.addEventListener('click', () => {
-    sendMessage();
-    /*
-    const nameColor = document.getElementById('msg-name');
-    nameColor.style.color = "red";
-    */
-})
-
-

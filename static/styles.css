@@ -37,7 +37,7 @@ body {
     font-weight: bolder;
 }
 
-.lobby-members{
+.lobby_members{
     display: flex;
     position: relative;
     background-color: rgb(87, 87, 87);

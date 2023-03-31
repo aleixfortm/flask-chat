@@ -163,6 +163,7 @@ def connect(auth):
             "name": name,
             "color": color,
             "message": message,
+            "n_users": rooms[room]['n_users'] + 1,
             }
 
     send(content, to=room)
@@ -199,6 +200,7 @@ def disconnect():
             "name": name,
             "color": color,
             "message": message,
+            "n_users": rooms[room]['n_users'] - 1,
             }
 
     send(content, to=room)
