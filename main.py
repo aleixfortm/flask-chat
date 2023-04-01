@@ -3,16 +3,20 @@ from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 from string import ascii_uppercase
 
-
+# Declare server app and required config
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'secret2'
 socketio = SocketIO(app)
 
+# Set to local or public. Local server will run by default on port 5000. Public will run on port 8080.
+server_config = 'local'
 
+# Declare variables
 rooms = {}
 used_colors = []
 
 def generate_code(length):
+
     #Generates random non-existent 4-digit code
     while True:
         code = ''
@@ -22,59 +26,71 @@ def generate_code(length):
         if code not in rooms:
             return code
 
+
 def generate_color():
     global used_colors
 
-    # Generates random RGB values
+    # Randomise r, g, b values. By setting one of them to 255, the resulting color will be bright
     r = 255
     g = random.randint(0, 255)
     b = random.randint(0, 255)
 
+    # Shuffle values
     colors = [r, g, b]
     random.shuffle(colors)
 
     return tuple(colors)
    
 
+# Main server route
 @app.route("/", methods=["POST", "GET"])
 def home():
 
     session.clear()
-
+    # If client is sending data to the server via POST request, save that data
     if request.method == 'POST':
         name = request.form.get('name')
         code = request.form.get('code')
         join = request.form.get('join', False)
         create = request.form.get('create', False)
 
+        # Display errors on home screen if received data is not valid
         if not name:
             return render_template("home.html", error='Provide a valid name', code=code, name=name)
-        
         if join != False and not code:
             return render_template('home.html', error='Please enter a valid room code', code=code, name=name)
 
+
         room = code
+        # Creates new lobby if received a True 'create' argument
         if create != False:
             room = generate_code(4)
             rooms[room] = {'n_users': 0, 'users': []}
             print(rooms)
+        # If 'create' argument is false and specified room is non-existent, return client to home and display error
         elif code not in rooms:
             return render_template('home.html', error='Specified room does not exist', code=code, name=name)
 
+        # Save room code and username on client's session
         session['room'] = room
         session['name'] = name
         
+        # Redirect client to room route if passed all previous tests
         return redirect(url_for('room'))
     
-    # render html block for home page, passing no variables
+    # Redirect client to home page if request sent was not POST
     return render_template("home.html")
 
+
+# Room route will check if client is elegible to load room template -- Send back home otherwise
 @app.route("/room")
 def room():
+
     # Redirect to home page if requirements not met (e.g. trying to access lobby without specifying name or lobby code)
     room = session.get('room')
     name = session.get('name')
 
+    # Check whether username and room already exist
     existent_user = False
     existent_lobby = False
     if name != None and room in rooms:
@@ -83,10 +99,11 @@ def room():
             if user['name'] == name:
                 existent_user = True
 
+    # Redirect client back to home page if one of the following conditions is met (not passed test)
     if room is None or name is None or room not in rooms or existent_user or not existent_lobby:
         return redirect(url_for('home'))
     
-    # render html block for lobby page, passing code variable to display
+    # Load client-side room template if passed all tests
     return render_template('room.html', code=room)
 
 
@@ -195,9 +212,6 @@ def disconnect():
     send(content, to=room)
     print(f"{name} has left room {room}")
 
-
-# Set server_cobfig as local or public. Local server will run by default on port 5000
-server_config = 'local'
 
 if __name__ == '__main__':
     if server_config == 'local':
