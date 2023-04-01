@@ -12,3 +12,4 @@
 # TO-DOs
 - Make front-end responsive 
 - Improve main page's UI
+- Keep user inside the lobby when refreshing, if there is more than one user
