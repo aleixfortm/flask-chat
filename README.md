@@ -9,8 +9,6 @@
 - Flask
 - SocketIO
 
-# Known issues (WIP)
-- Front-end is purely designed for desktop view, and it is non-responsive.
-- Session data might bug the user into entering a non-existent lobby.
-
-These issues are being worked on.
+# TO-DOs
+- Make front-end responsive 
+- Improve main page's UI
