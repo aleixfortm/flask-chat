@@ -1,6 +1,6 @@
 var socketio = io();
 
-const createJoinMessage = (name, msg, color='white', n_users=1) => {
+const createJoinMessage = (name, msg, color='white', n_users) => {
     lobby_members.innerHTML = n_users;
 
     const content =  `
@@ -26,7 +26,7 @@ const createMessage = (name, msg, color='red') => {
     </div>
     `;
     
-    messages.innerHTML += content;
+    messages.innerHTML = content;
 };
 
 const createLeaveMessage = (name, msg, color='white', n_users=1) => {
@@ -47,16 +47,16 @@ const createLeaveMessage = (name, msg, color='white', n_users=1) => {
 
 socketio.on('message', (data) => {
     if (data.message === 'has joined the lobby') {
-        createJoinMessage(data.name, data.message, data.color);
+        createJoinMessage(data.name, data.message, data.color, data.n_users);
 
 
     }else if (data.message === 'has left the lobby') {
 
-        createLeaveMessage(data.name, data.message, data.color);
+        createLeaveMessage(data.name, data.message, data.color, data.n_users);
 
     }else{
 
-        createMessage(data.name, data.message, data.color, data.n_users);
+        createMessage(data.name, data.message, data.color);
 
     }
 })

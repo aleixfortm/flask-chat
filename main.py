@@ -33,16 +33,6 @@ def generate_color():
     colors = [r, g, b]
     random.shuffle(colors)
 
-    """
-    # Makes one of the colors imperatively bright
-    colors = ['red', 'dodgerblue', 'midnightblue', 'darkorange', 'fuchsia', 'green', 'purple', 'salmon', 'indigo', 'tomato']
-    while True:
-        x = random.randint(0, len(colors) - 1)
-        if colors[x] not in used_colors:
-            used_colors.append(colors[x])
-            break
-    """
-
     return tuple(colors)
    
 
@@ -142,12 +132,14 @@ def connect(auth):
     room = session.get('room')
     name = session.get('name')
     
+    # WIP -----------------------------
     existent_user = False
     if room in rooms:
         for user in rooms[room]['users']:
             if user['name'] == name:
                 existent_user = True
                 break 
+    # ---------------------------------
 
     if not room or not name:
         return
@@ -184,9 +176,6 @@ def disconnect():
     for user in user_list:
         if user['name'] == name:
             color = user['color']
-            # The next line of code deletes the user from the lobby. It is good practice so that we use as 
-            # little memory as possible. However, the color from this user is lost, and if it joins 
-            # the chat again, the color will change. By commenting it we avoid color change when joining with the same color.
             user_list.remove(user)
             break 
 
@@ -200,16 +189,19 @@ def disconnect():
             "name": name,
             "color": color,
             "message": message,
-            "n_users": rooms[room]['n_users'] - 1,
+            "n_users": rooms[room]['n_users'],
             }
 
     send(content, to=room)
     print(f"{name} has left room {room}")
 
 
-if __name__ == '__main__':
-    # LOCAL ACCESS
-    socketio.run(app, debug=True)
+# Set server_cobfig as local or public. Local server will run by default on port 5000
+server_config = 'local'
 
-    # PUBLIC ACCESS
-    #socketio.run(app, port=8080, host='0.0.0.0')
+if __name__ == '__main__':
+    if server_config == 'local':
+        socketio.run(app, debug=True)
+    
+    elif server_config == 'public':
+        socketio.run(app, port=8080, host='0.0.0.0')
