@@ -7,7 +7,7 @@
 # Dependencies
 
 - Flask
-- SocketIO
+- Flask_SocketIO
 
 # TO-DOs
 - Make front-end responsive 
