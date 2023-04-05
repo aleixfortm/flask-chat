@@ -37,7 +37,7 @@ def generate_color():
     # Shuffle values
     colors = [r, g, b]
     random.shuffle(colors)
-
+    
     return tuple(colors)
    
 
@@ -45,7 +45,9 @@ def generate_color():
 @app.route("/", methods=["POST", "GET"])
 def home():
 
+    # Clear session data for a new client
     session.clear()
+
     # If client is sending data to the server via POST request, save that data
     if request.method == 'POST':
         name = request.form.get('name')
