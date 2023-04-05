@@ -5,7 +5,6 @@ from string import ascii_uppercase
 
 # Declare server app and required config
 app = Flask(__name__)
-app.config["SECRET_KEY"] = 'secret2'
 socketio = SocketIO(app)
 
 # Set to local or public. Local server will run by default on port 5000. Public will run on port 8080.
